@@ -2,19 +2,20 @@
   <div class="user-profile">
     <div class="user-profile__sidebar">
       <div class="user-profile__user-panel">
-        <h1 class="user-profile__username">@{{ user.username }}</h1>
-        <div class="user-profile__admi-badge" v-if="user.isAdmin">Admin</div>
-        <div class="user-profile__follower-count"><strong>Followers: </strong> {{ followers }}</div>
+        <h1 class="user-profile__username">@{{ state.user.username }}</h1>
+        <div class="user-profile__admi-badge" v-if="state.user.isAdmin">Admin</div>
+        <div class="user-profile__follower-count"><strong>Followers: </strong> {{ state.followers }}</div>
       </div>
       <CreateTwootPanel @add-twoot="addTwoot" />
     </div>
     <div class="user-profile__twoots-wrapper">
-      <TwootItem v-for="twoot in user.twoots" :key="twoot.id" :username="user.username" :twoot="twoot" />
+      <TwootItem v-for="twoot in state.user.twoots" :key="twoot.id" :username="state.user.username" :twoot="twoot" />
     </div>
   </div>
 </template>
 
 <script>
+import { reactive } from "vue"
 import TwootItem from "@/components/TwootItem.vue"
 import CreateTwootPanel from "@/components/CreateTwootPanel.vue"
 export default {
@@ -23,63 +24,31 @@ export default {
     TwootItem,
     CreateTwootPanel
   },
-  data() {
-    return {
-      newTwootContent: "",
-      selectedTwootType: "instant",
-      twootTypes: [
-        { value: "draft", name: "Draft" },
-        { value: "instant", name: "Instant Twoot" }
-      ],
+  setup() {
+    const state = reactive({
       followers: 0,
       user: {
         id: 1,
         username: "_MitchellRomney",
         firstName: "Mitchell",
         lastName: "Romney",
-        email: "mitchellromney@theearthissquare.com",
+        email: "mitchell@mitchell.com",
         isAdmin: true,
         twoots: [
-          { id: 1, content: "Twotter is Amazing!" },
-          { id: 2, content: "Don't forger to follow" }
+          { id: 1, content: "Twooter is amazing" },
+          { id: 2, content: "Dont for get to sub" }
         ]
       }
+    })
+
+    function addTwoot(twoot) {
+      state.user.twoots.unshift({ id: state.user.twoots.length + 1, content: twoot })
     }
-  },
-  watch: {
-    followers(newFollowerCount, oldFollowerCount) {
-      if (oldFollowerCount < newFollowerCount) {
-        console.log(`${this.user.username} has gained a follower!`)
-      }
+
+    return {
+      state,
+      addTwoot
     }
-  },
-  computed: {
-    fullName() {
-      return `${this.user.firstName} ${this.user.lastName}`
-    },
-    newTwootCharCount() {
-      return this.newTwootContent.length
-    }
-  },
-  methods: {
-    followUser() {
-      this.followers++
-    },
-    toggleFav(id) {
-      console.log(`Favorited Twoot # ${id}`)
-    },
-    createNewTwoot() {
-      if (this.newTwootContent && this.selectedTwootType !== "draft") {
-        this.user.twoots.unshift({
-          id: this.user.twoots.length + 1,
-          content: this.newTwootContent
-        })
-        this.newTwootContent = ""
-      }
-    }
-  },
-  mounted() {
-    this.followUser()
   }
 }
 </script>
