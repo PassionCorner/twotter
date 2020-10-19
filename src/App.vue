@@ -1,29 +1,31 @@
 <template>
   <div id="app">
     <nav>
-      <div class="navigation__logo">
-        Twooter
-      </div>
-      <div class="navigation__user">
+      <router-link to="/">
+        <div class="navigation__logo">
+          Twotter
+        </div>
+      </router-link>
+      <div class="navigation__user" v-if="user">
         {{ user.username }}
       </div>
     </nav>
-    <UserProfile />
+    <router-view/>
   </div>
 </template>
 
 <script>
-import UserProfile from "@/components/UserProfile.vue"
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+
 export default {
-  name: "App",
-  components: {
-    UserProfile
-  },
-  data() {
+  name: 'App',
+  setup() {
+    const store = useStore();
+    const user = computed(() => store.state.User.user);
+
     return {
-      user: {
-        username: "_MitchellRomney"
-      }
+      user
     }
   }
 }
@@ -36,7 +38,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100vh;
-  background-color: #f3f5fa;
+  background-color: #F3F5FA;
 
   nav {
     display: flex;

@@ -1,7 +1,7 @@
 <template>
   <form class="create-twoot-panel" @submit.prevent="createNewTwoot" :class="{ '--exceeded': newTwootCharacterCount > 180 }">
     <label for="newTwoot"><strong>New Twoot</strong> ({{ newTwootCharacterCount }}/180)</label>
-    <textarea id="newTwoot" rows="4" v-model="state.newTwootContent" />
+    <textarea id="newTwoot" rows="4" v-model="state.newTwootContent"/>
 
     <div class="create-twoot-panel__submit">
       <div class="create-twoot-type">
@@ -21,26 +21,26 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue"
+import { reactive, computed } from 'vue';
 
 export default {
   name: "CreateTwootPanel",
   setup(props, ctx) {
     const state = reactive({
-      newTwootContent: "",
-      selectedTwootType: "instant",
+      newTwootContent: '',
+      selectedTwootType: 'instant',
       twootTypes: [
-        { value: "draft", name: "Draft" },
-        { value: "instant", name: "Instant Twoot" }
+        { value: 'draft', name: 'Draft' },
+        { value: 'instant', name: 'Instant Twoot'}
       ]
     })
 
     const newTwootCharacterCount = computed(() => state.newTwootContent.length)
 
     function createNewTwoot() {
-      if (state.newTwootContent && state.selectedTwootType !== "draft") {
-        ctx.emit("add-twoot", state.newTwootContent)
-        state.newTwootContent = ""
+      if (state.newTwootContent && state.selectedTwootType !== 'draft') {
+        ctx.emit('add-twoot', state.newTwootContent);
+        state.newTwootContent = '';
       }
     }
 
@@ -50,7 +50,7 @@ export default {
       createNewTwoot
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -61,7 +61,7 @@ export default {
   flex-direction: column;
 
   textarea {
-    border: 1px solid #dfe3e8;
+    border: 1px solid #DFE3E8;
     border-radius: 5px;
   }
 
